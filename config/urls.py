@@ -17,6 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from blog_app.views import posts, new_post, read_post
+
 urlpatterns = [
+    path('', posts, name='posts'),
+    path('new', new_post, name='new_post'),
+    path('<int:id>', read_post, name='read_post'),
     path('admin/', admin.site.urls),
 ]
