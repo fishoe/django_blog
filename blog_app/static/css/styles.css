@@ -84,3 +84,25 @@ main {
     padding: 2rem;
     background-color: #f4f4f4;
 }
+
+.post-actions {
+    margin-top: 1rem;
+}
+
+.post-actions button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.post-actions .delete-btn {
+    background-color: #dc3545;
+}
+
+.post-actions button:hover {
+    opacity: 0.8;
+}
