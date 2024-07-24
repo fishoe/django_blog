@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
+from .models import Post
 
 # Create your views here.
 post_db = [
@@ -42,31 +43,36 @@ Integer auctor est et aliquet gravida. Donec tincidunt urna vel mollis ornare. C
 
 def posts(request):
     if request.method == 'POST':
-        post = {
-            'id': len(post_db) + 1,
-            'title': request.POST.get('title'),
-            'content': request.POST.get('content'),
-            'date_posted': '2024-01-05 12:34:56'
-        }
-        post_db.append(post)
-        context = {
-            'posts': post_db
-        }
-        return redirect('read_post', post['id'])
+        post = Post.objects.create(
+            title=request.POST.get('title'),
+            content=request.POST.get('content')
+        )
+        return redirect('read_post', post.id)
     context = {
-        'posts': post_db
+        'posts': Post.objects.all()
     }
     return render(request, 'posts.html', context)
 
 def new_post(request):
     return render(request, 'new_post.html')
 
+def edit_post(request, id: int):
+    post = Post.objects.get(id=id)
+    if request.method == 'POST':
+        post.title = request.POST.get('title')
+        post.content = request.POST.get('content')
+        post.save()
+        return redirect('read_post', post.id)
+    return render(request, 'edit_post.html', {'post': post})
+
 def read_post(request, id: int):
-    for i in post_db:
-        if i['id'] == id:
-            context = {
-                'post': i
-            }
-            print(context["post"])
-            return render(request, 'read_post.html', context)
-    raise Http404('Post not found')
+    try :
+        post = Post.objects.get(id=id)
+        return render(request, 'read_post.html', {'post': post})
+    except Post.DoesNotExist:
+        raise Http404('Post not found')
+
+def delete_post(request, id: int):
+    post = Post.objects.get(id=id)
+    post.delete()
+    return redirect('posts')

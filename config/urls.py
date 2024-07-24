@@ -17,11 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from blog_app.views import posts, new_post, read_post
+from blog_app.views import posts, new_post, read_post, edit_post, delete_post
 
 urlpatterns = [
     path('', posts, name='posts'),
     path('new', new_post, name='new_post'),
     path('<int:id>', read_post, name='read_post'),
+    path('<int:id>/edit', edit_post, name='edit_post'),
+    path('<int:id>/delete', delete_post, name='delete_post'),
     path('admin/', admin.site.urls),
 ]

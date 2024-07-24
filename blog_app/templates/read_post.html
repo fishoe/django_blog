@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>포스트 상세</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <script>
+        function delete_post(post_id) {
+            if (confirm('정말 삭제하시겠습니까?')) {
+                fetch(`${post_id}/delete`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.href = '/';
+                    }
+                });
+            }
+        }
+
+        function edit_post(post_id) {
+            location.href = `${post_id}/edit`;
+        }
+    </script>
 </head>
 <body>
     {% include 'navigation.html' %}
@@ -13,6 +31,10 @@
             <h2>{{ post.title }}</h2>
             <p>{{ post.created_at }}</p>
             <p>{{ post.content | linebreaks }}</p>
+            <div class="post-actions">
+                <button class="edit-btn" onclick="">수정</button>
+                <button class="delete-btn" onclick="">삭제</button>
+            </div>
         </article>
     </main>
     {% include 'footer.html' %}
